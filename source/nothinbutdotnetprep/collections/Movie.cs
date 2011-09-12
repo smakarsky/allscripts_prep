@@ -1,5 +1,4 @@
 using System;
-using nothinbutdotnetprep.utility;
 using nothinbutdotnetprep.utility.filtering;
 
 namespace nothinbutdotnetprep.collections
@@ -9,17 +8,7 @@ namespace nothinbutdotnetprep.collections
         public string title { get; set; }
         public ProductionStudio production_studio { get; set; }
         public Genre genre { get; set; }
-        int rating1;
-
-        public void setRating(int value)
-        {
-            rating1 = value;
-        }
-
-        public int rating
-        {
-            get { return rating1; }
-        }
+        public int rating { get; set; }
 
         public DateTime date_published { get; set; }
 
@@ -60,6 +49,5 @@ namespace nothinbutdotnetprep.collections
             return is_published_by(ProductionStudio.Pixar).or
                 (is_published_by(ProductionStudio.Disney));
         }
-
     }
 }
