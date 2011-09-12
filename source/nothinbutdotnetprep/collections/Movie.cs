@@ -9,7 +9,18 @@ namespace nothinbutdotnetprep.collections
         public string title { get; set; }
         public ProductionStudio production_studio { get; set; }
         public Genre genre { get; set; }
-        public int rating { get; set; }
+        int rating1;
+
+        public void setRating(int value)
+        {
+            rating1 = value;
+        }
+
+        public int rating
+        {
+            get { return rating1; }
+        }
+
         public DateTime date_published { get; set; }
 
         public bool Equals(Movie other)
