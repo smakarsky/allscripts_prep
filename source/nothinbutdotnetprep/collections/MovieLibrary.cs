@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using nothinbutdotnetprep.utility;
 
 namespace nothinbutdotnetprep.collections
 {
@@ -14,27 +15,14 @@ namespace nothinbutdotnetprep.collections
 
         public IEnumerable<Movie> all_movies()
         {
-            foreach (var movie in movies)
-            {
-                yield return movie;
-            }
-            //return this.movies;
+            return movies.one_at_a_time();
         }
 
         public void add(Movie movie)
         {
-            if (!movies.Contains(movie))
-            {
-                if (movie.title != null)
-                {
-                    foreach (var temp_movie in movies)
-                        if (movie.title == temp_movie.title)
-                            return;
-                }
+            if (movies.Contains(movie)) return;
 
-                this.movies.Add(movie);
-
-            }
+            this.movies.Add(movie);
         }
 
         public IEnumerable<Movie> sort_all_movies_by_title_descending()
@@ -44,7 +32,7 @@ namespace nothinbutdotnetprep.collections
 
         public IEnumerable<Movie> all_movies_published_by_pixar()
         {
-            foreach ( var movie in movies)
+            foreach (var movie in movies)
             {
                 if (movie.production_studio == ProductionStudio.Pixar)
                     yield return movie;
@@ -55,7 +43,8 @@ namespace nothinbutdotnetprep.collections
         {
             foreach (var movie in movies)
             {
-                if (movie.production_studio == ProductionStudio.Pixar || movie.production_studio == ProductionStudio.Disney)
+                if (movie.production_studio == ProductionStudio.Pixar ||
+                    movie.production_studio == ProductionStudio.Disney)
                     yield return movie;
             }
         }

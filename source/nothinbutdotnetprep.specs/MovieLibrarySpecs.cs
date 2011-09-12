@@ -86,6 +86,22 @@ namespace nothinbutdotnetprep.specs
                 number_of_movies.ShouldEqual(2);
             };
         }
+        public class when_iterating : movie_library_concern
+        {
+            static int number_of_movies;
+
+            Establish c = () =>
+                Enumerable.Range(1, 100).each(i => movie_collection.Add(new Movie()));
+
+            Because b = () =>
+                sut.all_movies();
+
+            It should_iterate = () =>
+            {
+            };
+
+            static IEnumerable<Movie> result;
+        }
 
         [Subject(typeof(MovieLibrary))]
         public class when_asked_for_all_of_the_movies : movie_library_concern
