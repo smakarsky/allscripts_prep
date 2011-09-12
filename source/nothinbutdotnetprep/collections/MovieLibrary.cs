@@ -32,22 +32,30 @@ namespace nothinbutdotnetprep.collections
 
         public IEnumerable<Movie> all_movies_published_by_pixar()
         {
-            foreach (var movie in movies)
-            {
-                if (movie.production_studio == ProductionStudio.Pixar)
-                    yield return movie;
-            }
+   
+            return AllByPredicate(m => m.production_studio == ProductionStudio.Pixar);
+
         }
 
         public IEnumerable<Movie> all_movies_published_by_pixar_or_disney()
         {
-            foreach (var movie in movies)
-            {
-                if (movie.production_studio == ProductionStudio.Pixar ||
-                    movie.production_studio == ProductionStudio.Disney)
-                    yield return movie;
-            }
+
+            return AllByPredicate(m => m.production_studio == ProductionStudio.Pixar ||
+                                m.production_studio == ProductionStudio.Disney);
+            //foreach (var movie in movies)
+            //{
+            //    if (movie.production_studio == ProductionStudio.Pixar ||
+            //        movie.production_studio == ProductionStudio.Disney)
+            //        yield return movie;
+            //}
         }
+
+        public IEnumerable<Movie> AllByPredicate(Predicate<Movie> predicate)
+
+        {
+            return ((List<Movie>) movies).FindAll(predicate);
+        }
+
 
         public IEnumerable<Movie> sort_all_movies_by_title_ascending()
         {
@@ -61,20 +69,18 @@ namespace nothinbutdotnetprep.collections
 
         public IEnumerable<Movie> all_movies_not_published_by_pixar()
         {
-            foreach (var movie in movies)
-            {
-                if (movie.production_studio != ProductionStudio.Pixar)
-                    yield return movie;
-            }
+            return AllByPredicate(m => m.production_studio != ProductionStudio.Pixar);
         }
 
         public IEnumerable<Movie> all_movies_published_after(int year)
         {
-            foreach (var movie in movies)
-            {
-                if (movie.date_published.Year > year)
-                    yield return movie;
-            }
+
+            return AllByPredicate(m => m.date_published.Year > year);
+        //    foreach (var movie in movies)
+        //    {
+        //        if (movie.date_published.Year > year)
+        //            yield return movie;
+        //    }
         }
 
         public IEnumerable<Movie> all_movies_published_between_years(int startingYear, int endingYear)
