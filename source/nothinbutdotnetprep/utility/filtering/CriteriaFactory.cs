@@ -15,10 +15,20 @@ namespace nothinbutdotnetprep.utility.filtering
         {
             return new AnonymousMatch<ItemToMatch>(x => property_accessor(x).Equals(value_to_equal));
         }
-
-        public IMatchAn<ItemToMatch> equal_to_any(params PropertyType[] values)
+      
+        public IMatchAn<ItemToMatch> equal_to_any(params PropertyType[] conditions)
         {
-            throw new NotImplementedException();
+          IMatchAn<ItemToMatch> result = null;
+          int i = 0;
+          foreach (PropertyType condition in conditions)
+          {
+            i++;
+            if (i == 1)
+              result = equal_to(condition);
+            else
+              result = result.or(equal_to(condition));
+          }
+          return result;
         }
     }
 }
