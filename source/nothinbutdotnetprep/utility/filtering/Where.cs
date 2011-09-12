@@ -4,13 +4,9 @@ namespace nothinbutdotnetprep.utility.filtering
 {
     public class Where<ItemToMatch>
     {
-        public static CriteriaFactory has_a<PropertyType>(Func<ItemToMatch, PropertyType> property_accessor)
+        public static CriteriaFactory<ItemToMatch,PropertyType> has_a<PropertyType>(Func<ItemToMatch, PropertyType> property_accessor)
         {
-            throw new NotImplementedException();
+            return new CriteriaFactory<ItemToMatch, PropertyType>(property_accessor);
         }
-    }
-
-    public class CriteriaFactory
-    {
     }
 }
