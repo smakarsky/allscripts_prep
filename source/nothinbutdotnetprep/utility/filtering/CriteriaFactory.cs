@@ -19,7 +19,7 @@ namespace nothinbutdotnetprep.utility.filtering
 
         public IMatchAn<ItemToMatch> equal_to_any(params PropertyType[] possible_values)
         {
-            return new AnonymousMatch<ItemToMatch>(x => new List<PropertyType>(possible_values).Contains(property_accessor(x));
+            return new AnonymousMatch<ItemToMatch>(x => new List<PropertyType>(possible_values).Contains(property_accessor(x)));
         }
     }
 }
