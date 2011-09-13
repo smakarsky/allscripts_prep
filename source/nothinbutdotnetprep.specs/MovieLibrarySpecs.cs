@@ -9,6 +9,7 @@ using nothinbutdotnetprep.specs.utility;
 using System.Linq;
 using nothinbutdotnetprep.utility;
 using nothinbutdotnetprep.utility.filtering;
+using nothinbutdotnetprep.utility.sort;
 
 /* The following set of Context/Specification pairs are in place to specify the functionality that you need to complete for the MovieLibrary class.
  * MovieLibrary is an collection of Movie. It exposes the ability to search,sort, and iterate over all of the movies that it contains.
@@ -277,7 +278,9 @@ namespace nothinbutdotnetprep.specs
             };
         }
 
-        [Subject(typeof(MovieLibrary))]
+        
+            
+       [Subject(typeof(MovieLibrary))]
         public class when_sorting_movies : concern_for_searching_and_sorting
         {
             /* Look at the potential method explosion that can start to occur as you start to sort on different criteria
@@ -287,8 +290,7 @@ namespace nothinbutdotnetprep.specs
 
             It should_be_able_to_sort_all_movies_by_title_descending = () =>
             {
-                var comparer = Sort<Movie>.by_descending(x => x.title)
-
+                var comparer = Sort<Movie>.by_descending(x => x.title);
                 var results = sut.all_movies().sort_using(comparer);
 
 
@@ -299,7 +301,13 @@ namespace nothinbutdotnetprep.specs
 
             It should_be_able_to_sort_all_movies_by_title_ascending = () =>
             {
-                var results = sut.sort_all_movies_by_title_ascending();
+
+                var comparer = Sort<Movie>.by_ascending(x => x.title);
+                var results = sut.all_movies().sort_using(comparer);
+
+               //    var results = sut.sort_all_movies_by_title_ascending();
+
+                results.ToList().ForEach(m => Console.WriteLine(m.title));
 
                 results.ShouldContainOnlyInOrder(a_bugs_life, cars, indiana_jones_and_the_temple_of_doom,
                                                  pirates_of_the_carribean, shrek, the_ring,
