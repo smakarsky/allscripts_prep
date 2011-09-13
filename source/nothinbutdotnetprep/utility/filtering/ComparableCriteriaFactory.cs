@@ -3,7 +3,7 @@ using System;
 namespace nothinbutdotnetprep.utility.filtering
 {
 
-    public class ComparableCriteriaFactory<ItemToMatch, PropertyType> : ICreateSpecifications<ItemToMatch, PropertyType> where PropertyType : IComparable<PropertyType>
+    public class ComparableCriteriaFactory<ItemToMatch, PropertyType> :  IAnonymousMatch<ItemToMatch>,ICreateSpecifications<ItemToMatch, PropertyType> where PropertyType : IComparable<PropertyType>
     {
         Func<ItemToMatch, PropertyType> property_accessor;
         ICreateSpecifications<ItemToMatch, PropertyType> original_factory;
@@ -29,18 +29,24 @@ namespace nothinbutdotnetprep.utility.filtering
             return original_factory.not_equal_to(value);
         }
 
+        public  IMatchAn<ItemToMatch> CreateAnonymousMatch(Predicate<ItemToMatch> property_accessor_value)
+        {
+
+            return new AnonymousMatch<ItemToMatch>(property_accessor_value);
+        }
+       
         public IMatchAn<ItemToMatch> greater_than(PropertyType value)
         {
-            return new AnonymousMatch<ItemToMatch>(x => property_accessor(x).CompareTo(value) > 0);
+            return CreateAnonymousMatch(x => property_accessor(x).CompareTo(value) > 0);
+            //return new AnonymousMatch<ItemToMatch>(x => property_accessor(x).CompareTo(value) > 0);
         }
 
         public IMatchAn<ItemToMatch> between(PropertyType begin_value, PropertyType end_value)
         {
-            return
-                new AnonymousMatch<ItemToMatch>(
-                    x =>
-                        (property_accessor(x).CompareTo(begin_value) >= 0 &&
-                            property_accessor(x).CompareTo(end_value) <= 0));
+            return  CreateAnonymousMatch(x =>(property_accessor(x).CompareTo(begin_value) >= 0 &&property_accessor(x).CompareTo(end_value) <= 0));
+                //new AnonymousMatch<ItemToMatch>(x =>(property_accessor(x).CompareTo(begin_value) >= 0 &&property_accessor(x).CompareTo(end_value) <= 0));
         }
+
+
     }
 }

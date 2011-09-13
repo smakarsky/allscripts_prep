@@ -2,7 +2,12 @@
 
 namespace nothinbutdotnetprep.utility.filtering
 {
-    public class AnonymousMatch<ItemToMatch> : IMatchAn<ItemToMatch>
+    public interface IAnonymousMatch<ItemToMatch>
+    {
+        IMatchAn<ItemToMatch>  CreateAnonymousMatch(Predicate<ItemToMatch> property_accessor_value);
+    }
+
+    public class AnonymousMatch<ItemToMatch> : IMatchAn<ItemToMatch>, IAnonymousMatch<ItemToMatch>
     {
         Predicate<ItemToMatch> condition;
 
@@ -14,6 +19,11 @@ namespace nothinbutdotnetprep.utility.filtering
         public bool matches(ItemToMatch item)
         {
             return condition(item);
+        }
+
+        public IMatchAn<ItemToMatch> CreateAnonymousMatch(Predicate<ItemToMatch> property_accessor_value)
+        {
+            return new AnonymousMatch<ItemToMatch>(property_accessor_value);
         }
     }
 }
