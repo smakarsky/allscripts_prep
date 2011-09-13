@@ -19,8 +19,7 @@ namespace nothinbutdotnetprep.utility.filtering
 
         public IMatchAn<ItemToMatch> equal_to_any(params PropertyType[] possible_values)
         {
-            return CreateAnonymousMatch(x => new List<PropertyType>(possible_values).Contains(property_accessor(x)));
-               // new AnonymousMatch<ItemToMatch>(x => new List<PropertyType>(possible_values).Contains(property_accessor(x)));
+            return create_from(x => new List<PropertyType>(possible_values).Contains(property_accessor(x)));
         }
 
         public IMatchAn<ItemToMatch> not_equal_to(PropertyType value)
@@ -28,7 +27,7 @@ namespace nothinbutdotnetprep.utility.filtering
             return equal_to(value).not();
         }
 
-        public IMatchAn<ItemToMatch> CreateAnonymousMatch(Predicate<ItemToMatch> property_accessor_value)
+        public IMatchAn<ItemToMatch> create_from(Predicate<ItemToMatch> property_accessor_value)
         {
             return new AnonymousMatch<ItemToMatch>(property_accessor_value);
         }
