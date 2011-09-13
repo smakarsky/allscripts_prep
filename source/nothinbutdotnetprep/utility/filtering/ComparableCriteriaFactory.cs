@@ -1,17 +1,15 @@
 using System;
+using nothinbutdotnetprep.utility.ranges;
 
 namespace nothinbutdotnetprep.utility.filtering
 {
     public class ComparableCriteriaFactory<ItemToMatch, PropertyType> : ICreateSpecifications<ItemToMatch, PropertyType>
         where PropertyType : IComparable<PropertyType>
     {
-        Func<ItemToMatch, PropertyType> property_accessor;
         ICreateSpecifications<ItemToMatch, PropertyType> original_factory;
 
-        public ComparableCriteriaFactory(Func<ItemToMatch, PropertyType> property_accessor,
-                                         ICreateSpecifications<ItemToMatch, PropertyType> original_factory)
+        public ComparableCriteriaFactory(ICreateSpecifications<ItemToMatch, PropertyType> original_factory)
         {
-            this.property_accessor = property_accessor;
             this.original_factory = original_factory;
         }
 
@@ -30,23 +28,22 @@ namespace nothinbutdotnetprep.utility.filtering
             return original_factory.not_equal_to(value);
         }
 
-        public IMatchAn<ItemToMatch> create_from(Predicate<ItemToMatch> property_accessor_value)
+
+        public IMatchAn<ItemToMatch> create_from(IMatchAn<PropertyType> real_matcher)
         {
-            return original_factory.create_from(property_accessor_value);
+            return original_factory.create_from(real_matcher);
         }
 
         public IMatchAn<ItemToMatch> greater_than(PropertyType value)
         {
-            return create_from(x => property_accessor(x).CompareTo(value) > 0);
+            return create_from(new FallsInRange<PropertyType>(
+                new RangeWithNoUpperBound<PropertyType>(value)));
         }
 
         public IMatchAn<ItemToMatch> between(PropertyType begin_value, PropertyType end_value)
         {
-            return
-                create_from(
-                    x =>
-                        (property_accessor(x).CompareTo(begin_value) >= 0 &&
-                            property_accessor(x).CompareTo(end_value) <= 0));
+            return create_from(new FallsInRange<PropertyType>(
+                new InclusiveRange<PropertyType>(begin_value, end_value)));
         }
     }
 }
