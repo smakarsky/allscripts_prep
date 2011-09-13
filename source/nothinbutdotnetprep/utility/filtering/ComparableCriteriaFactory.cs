@@ -4,7 +4,7 @@ using nothinbutdotnetprep.utility.ranges;
 namespace nothinbutdotnetprep.utility.filtering
 {
     public class ComparableCriteriaFactory<ItemToMatch, PropertyType> : ICreateSpecifications<ItemToMatch, PropertyType>
-        where PropertyType : IComparable<PropertyType>
+        //where PropertyType : IComparable<PropertyType>
     {
         ICreateSpecifications<ItemToMatch, PropertyType> original_factory;
 
@@ -34,16 +34,26 @@ namespace nothinbutdotnetprep.utility.filtering
             return original_factory.create_from(real_matcher);
         }
 
-        public IMatchAn<ItemToMatch> greater_than(PropertyType value)
-        {
-            return create_from(new FallsInRange<PropertyType>(
-                new RangeWithNoUpperBound<PropertyType>(value)));
-        }
+        //public IMatchAn<ItemToMatch> greater_than(PropertyType value)
+        //{
+        //    return create_from(new FallsInRange<PropertyType>(
+        //        new RangeWithNoUpperBound<PropertyType>(value)));
+        //}
 
-        public IMatchAn<ItemToMatch> between(PropertyType begin_value, PropertyType end_value)
+        //public IMatchAn<ItemToMatch> between(PropertyType begin_value, PropertyType end_value)
+        //{
+        //    return create_from(new FallsInRange<PropertyType>(
+        //        new InclusiveRange<PropertyType>(begin_value, end_value)));
+        //}
+    }
+
+    public  static class ComparableExtension
+    {
+        public static IMatchAn<ItemToMatch> greater_than<ItemToMatch,PropertyType>
+            (this ICreateSpecifications<ItemToMatch, PropertyType> factory ,PropertyType value) where PropertyType: IComparable<PropertyType> 
         {
-            return create_from(new FallsInRange<PropertyType>(
-                new InclusiveRange<PropertyType>(begin_value, end_value)));
+               return factory.create_from(new FallsInRange<PropertyType>(
+                new RangeWithNoUpperBound<PropertyType>(value)));
         }
     }
 }
