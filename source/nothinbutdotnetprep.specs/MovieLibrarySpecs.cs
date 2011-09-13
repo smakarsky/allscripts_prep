@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Machine.Specifications;
 using developwithpassion.specifications.extensions;
 using developwithpassion.specifications.rhinomocks;
@@ -213,14 +214,8 @@ namespace nothinbutdotnetprep.specs
 
             It should_be_able_to_find_all_movies_published_by_pixar = () =>
             {
-                var criteria = Where<Movie>.has_a(x => x.production_studio)
-                    .equal_to(ProductionStudio.Pixar);
-
-
-                var results = sut.all_movies().all_items_matching(criteria);
-
-
-                results.ShouldContainOnly(cars, a_bugs_life);
+                Expression<Func<int, bool>> odd_numbers = x => x%2 == 0;
+                Console.Out.WriteLine(odd_numbers.ToString());
             };
 
             It should_be_able_to_find_all_movies_published_by_pixar_or_disney = () =>
@@ -237,10 +232,11 @@ namespace nothinbutdotnetprep.specs
             It should_be_able_to_find_all_movies_not_published_by_pixar = () =>
             {
                 var criteria = Where<Movie>.has_a(x => x.production_studio)
-                    .not_equal_to(ProductionStudio.Pixar);
+                    .not.equal_to(ProductionStudio.Pixar);
 
 
-                var results = sut.all_movies().all_items_matching(criteria);
+                var results = sut.all_movies().Where(criteria.matches);
+
 
 
                 results.ShouldNotContain(cars, a_bugs_life);
@@ -248,8 +244,7 @@ namespace nothinbutdotnetprep.specs
 
             It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
             {
-                var criteria = Where<Movie>.has_an(x => x.date_published.Year)
-                    .greater_than(2004);
+                var criteria = Where<Movie>.has_a(x => x.date_published).greater_than(2004);
 
 
                 var results = sut.all_movies().all_items_matching(criteria);
@@ -259,7 +254,7 @@ namespace nothinbutdotnetprep.specs
 
             It should_be_able_to_find_all_movies_published_between_a_certain_range_of_years = () =>
             {
-                var criteria = Where<Movie>.has_an(x => x.date_published.Year).between(1982, 2003);
+                var criteria = Where<Movie>.has_a(x => x.date_published.Year).between(1982, 2003);
 
                 var results = sut.all_movies().all_items_matching(criteria);
 
@@ -292,7 +287,10 @@ namespace nothinbutdotnetprep.specs
 
             It should_be_able_to_sort_all_movies_by_title_descending = () =>
             {
-                var results = sut.sort_all_movies_by_title_descending();
+                var comparer = Sort<Movie>.by_descending(x => x.title)
+
+                var results = sut.all_movies().sort_using(comparer);
+
 
                 results.ShouldContainOnlyInOrder(theres_something_about_mary, the_ring, shrek,
                                                  pirates_of_the_carribean, indiana_jones_and_the_temple_of_doom,
@@ -328,12 +326,13 @@ namespace nothinbutdotnetprep.specs
 
             It should_be_able_to_sort_all_movies_by_studio_rating_and_year_published = () =>
             {
-                //Studio Ratings (highest to lowest)
+                //Studio Rankings (highest to lowest)
                 //MGM
                 //Pixar
                 //Dreamworks
                 //Universal
                 //Disney
+                //Parmount
                 var results = sut.sort_all_movies_by_movie_studio_and_year_published();
                 /* should return a set of results 
                  * in the collection sorted by the rating of the production studio (not the movie rating) and year published. for this exercise you need to take the studio ratings
