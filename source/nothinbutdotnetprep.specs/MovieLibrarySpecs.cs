@@ -257,27 +257,8 @@ namespace nothinbutdotnetprep.specs
                 results.ShouldContainOnly(the_ring, shrek, theres_something_about_mary);
             };
 
-            It should_be_able_to_find_all_movies_published_between_a_certain_range_of_years_temp = () =>
-            {
-                
-
-                // and here I don't know how to create correct 'and' and 'or' methods to allow generic chaining.
-                var criteria = Where<Movie>.has_an(x => x.date_published.Year)
-                    .greater_than(2000).and(new IsInGenre(Genre.action)).or(new IsInGenre(Genre.kids));
-
-                var results = sut.all_movies().all_items_matching(criteria);
-
-
-                results.ToList().ForEach(i => Console.WriteLine(i.title));
-
-                results.ShouldContainOnly(pirates_of_the_carribean, a_bugs_life, cars, shrek);
-                
-            };
-
             It should_be_able_to_find_all_movies_published_between_a_certain_range_of_years = () =>
             {
-                //var results = sut.all_movies_published_between_years(1982, 2003);
-
                 var criteria = Where<Movie>.has_an(x => x.date_published.Year).between(1982, 2003);
 
                 var results = sut.all_movies().all_items_matching(criteria);
@@ -288,14 +269,14 @@ namespace nothinbutdotnetprep.specs
 
             It should_be_able_to_find_all_kid_movies = () =>
             {
-                var results = sut.all_kid_movies();
+                var results = sut.all_movies().all_items_matching(Where<Movie>.has_a(x => x.genre).equal_to(Genre.kids));
 
                 results.ShouldContainOnly(a_bugs_life, shrek, cars);
             };
 
             It should_be_able_to_find_all_action_movies = () =>
             {
-                var results = sut.all_action_movies();
+                var results = sut.all_movies().all_items_matching(Where<Movie>.has_a(x => x.genre).equal_to(Genre.action));
 
                 results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, pirates_of_the_carribean);
             };

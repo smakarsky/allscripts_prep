@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace nothinbutdotnetprep.utility.filtering
 {
@@ -10,13 +9,14 @@ namespace nothinbutdotnetprep.utility.filtering
             where PropertyType : IComparable<PropertyType>
 
         {
-            return new ComparableCriteriaFactory<ItemToMatch, PropertyType>(property_accessor);
+            return new ComparableCriteriaFactory<ItemToMatch, PropertyType>(property_accessor,
+                has_a(property_accessor));
         }
 
         public static CriteriaFactory<ItemToMatch, PropertyType> has_a<PropertyType>(
             Func<ItemToMatch, PropertyType> property_accessor)
         {
-                return new CriteriaFactory<ItemToMatch, PropertyType>(property_accessor);
+            return new CriteriaFactory<ItemToMatch, PropertyType>(property_accessor);
         }
     }
 }

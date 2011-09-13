@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace nothinbutdotnetprep.utility.filtering
 {
-    public class CriteriaFactory<ItemToMatch, PropertyType> 
+    public class CriteriaFactory<ItemToMatch, PropertyType> : ICreateSpecifications<ItemToMatch, PropertyType>
     {
         Func<ItemToMatch, PropertyType> property_accessor;
 
