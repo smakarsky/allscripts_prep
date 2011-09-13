@@ -19,12 +19,6 @@
             return new AndMatch<Item>(left_side, right_side);
         }
 
-        
-        public static IMatchAn<Item> and2<Item>(this IMatchAn<Item> left_side,
-                                      IMatchAn<Item> right_side)
-        {
-            return new AndMatch<Item>(left_side, right_side);
-        }
 
 
     }

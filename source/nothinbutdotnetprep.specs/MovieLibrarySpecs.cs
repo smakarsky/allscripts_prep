@@ -267,10 +267,8 @@ namespace nothinbutdotnetprep.specs
 
                 var results = sut.all_movies().all_items_matching(criteria);
 
-                foreach(var item in results)
-                {
-                    Console.WriteLine(item.title);
-                }
+
+                results.ToList().ForEach(i => Console.WriteLine(i.title));
 
                 results.ShouldContainOnly(pirates_of_the_carribean, a_bugs_life, cars, shrek);
                 
